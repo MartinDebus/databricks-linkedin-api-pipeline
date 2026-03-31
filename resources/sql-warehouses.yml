@@ -1,0 +1,10 @@
+resources:
+  sql_warehouses:
+    serverless_warehouse:
+      name: "serverless-warehouse"
+      cluster_size: "2X-Small"
+      warehouse_type: PRO
+      enable_serverless_compute: true
+      auto_stop_mins: 10
+      channel:
+        name: CHANNEL_NAME_CURRENT

@@ -1,0 +1,41 @@
+bundle:
+  name: my-lakehouse
+
+include:
+  - resources/*.yml
+  - projects/*/resources/*.yml
+
+variables:
+  catalog:
+    description: "Unity Catalog catalog name for this target"
+  service_principal_app_id:
+    description: "Application (client) ID of the service principal used to run jobs"
+
+targets:
+  dev-user:
+    mode: development
+    workspace:
+      host: https://<your-workspace-url>.azuredatabricks.net
+    variables:
+      catalog: <your-dev-catalog>
+      service_principal_app_id: <your-sp-app-id>
+      
+  dev:
+    mode: production
+    workspace:
+      host: https://<your-workspace-url>.azuredatabricks.net
+      root_path: /Users/${var.service_principal_app_id}/.bundle/${bundle.name}/${bundle.target}
+    variables:
+      catalog: <your-dev-catalog>
+      service_principal_app_id: <your-sp-app-id>
+
+
+  prod:
+    mode: production
+    workspace:
+      host: https://<your-prod-workspace-url>.azuredatabricks.net
+      root_path: /Users/${var.service_principal_app_id}/.bundle/${bundle.name}/${bundle.target}
+    variables:
+      catalog: <your-prod-catalog>
+      service_principal_app_id: <your-prod-sp-app-id>
+  
