@@ -16,3 +16,4 @@ venv/
 
 # Databricks local files
 *.db
+.vscode/settings.json

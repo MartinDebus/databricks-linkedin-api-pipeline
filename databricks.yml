@@ -10,6 +10,9 @@ variables:
     description: "Unity Catalog catalog name for this target"
   service_principal_app_id:
     description: "Application (client) ID of the service principal used to run jobs"
+  run_type:
+    description: "Job run type: 'initial' for full historical load, 'delta' for incremental"
+    default: initial
 
 targets:
   dev-user:
@@ -19,7 +22,12 @@ targets:
     variables:
       catalog: <your-dev-catalog>
       service_principal_app_id: <your-sp-app-id>
-      
+    resources:
+      jobs:
+        linkedin_ingest:
+          schedule:
+            pause_status: PAUSED
+
   dev:
     mode: production
     workspace:
@@ -28,7 +36,12 @@ targets:
     variables:
       catalog: <your-dev-catalog>
       service_principal_app_id: <your-sp-app-id>
-
+      run_type: delta
+    resources:
+      jobs:
+        linkedin_ingest:
+          schedule:
+            pause_status: UNPAUSED
 
   prod:
     mode: production
@@ -38,4 +51,9 @@ targets:
     variables:
       catalog: <your-prod-catalog>
       service_principal_app_id: <your-prod-sp-app-id>
-  
+      run_type: delta
+    resources:
+      jobs:
+        linkedin_ingest:
+          schedule:
+            pause_status: UNPAUSED
