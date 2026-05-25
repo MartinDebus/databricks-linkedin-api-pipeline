@@ -1,0 +1,26 @@
+resources:
+  pipelines:
+    linkedin_transform:
+      name: linkedin-transform
+      catalog: ${var.catalog}
+      schema: ${resources.schemas.bronze_linkedin.name}
+      serverless: true
+      channel: CURRENT
+      photon: false
+      continuous: false
+      configuration:
+        volume: /Volumes/${var.catalog}/${resources.schemas.bronze_linkedin.name}/${resources.volumes.landing.name}
+        silver_schema: ${var.catalog}.${resources.schemas.silver_linkedin.name}
+        gold_schema: ${var.catalog}.${resources.schemas.gold_linkedin.name}
+      libraries:
+        - file:
+            path: ../src/pipelines/load_bronze.sql
+        - file:
+            path: ../src/pipelines/load_silver.sql
+        - file:
+            path: ../src/pipelines/load_gold.sql
+      run_as:
+        service_principal_name: ${var.service_principal_app_id}
+
+      tags:
+        project: linkedin

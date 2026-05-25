@@ -2,6 +2,10 @@ resources:
   jobs:
     linkedin_ingest:
       name: linkedin-medallion
+      schedule:
+        quartz_cron_expression: "0 0 6 * * ?"
+        timezone_id: "Europe/Berlin"
+        pause_status: UNPAUSED
 
       parameters:
         - name: catalog
@@ -13,6 +17,9 @@ resources:
         - name: run_type
           default: ${var.run_type}
 
+      run_as:
+        service_principal_name: ${var.service_principal_app_id}
+
       tags:
         project: linkedin
 
@@ -22,7 +29,14 @@ resources:
             notebook_path: ../notebooks/ingest.ipynb
           environment_key: serverless
 
+        - task_key: transform
+          depends_on:
+            - task_key: ingest
+          pipeline_task:
+            pipeline_id: ${resources.pipelines.linkedin_transform.id}
+
       environments:
         - environment_key: serverless
           spec:
             client: "4"
+
