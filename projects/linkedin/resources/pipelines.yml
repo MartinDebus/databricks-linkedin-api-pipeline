@@ -4,7 +4,6 @@ resources:
       name: linkedin-transform
       catalog: ${var.catalog}
       schema: ${resources.schemas.bronze_linkedin.name}
-      serverless: true
       channel: CURRENT
       photon: false
       continuous: false
