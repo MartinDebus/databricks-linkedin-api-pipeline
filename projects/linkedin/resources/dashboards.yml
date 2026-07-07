@@ -1,0 +1,7 @@
+resources:
+  dashboards:
+    linkedin_overview:
+      display_name: LinkedIn Overview
+      file_path: projects/linkedin/src/dashboards/LinkedIn Overview.lvdash.json
+      warehouse_id: ${resources.sql_warehouses.serverless_warehouse.id}
+      embed_credentials: false
